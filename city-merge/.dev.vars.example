@@ -1,0 +1,10 @@
+# Copy this file to .dev.vars and fill in your secrets.
+# .dev.vars is loaded automatically by `wrangler pages dev` and is gitignored.
+
+# Required for the proxy to call OpenAI.
+OPENAI_API_KEY=sk-...
+
+# Optional. When set, the /api/generate endpoint rejects requests whose
+# `accessCode` body field does not match this value. Leave empty/unset to allow
+# anyone with the URL to generate (typical for local dev).
+APP_ACCESS_CODE=

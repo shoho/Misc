@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>City Merge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,300..600;1,8..60,300..600&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="/" class="nav__brand">
+      <span class="nav__mark" aria-hidden="true">◌</span>
+      City Merge
+    </a>
+    <span class="nav__tagline">Miniature concept stores, generated.</span>
+  </nav>
+
+  <main class="page">
+
+    <!-- ───────────── Hero ───────────── -->
+    <header class="hero">
+      <p class="hero__eyebrow">Miniature architecture</p>
+      <h1 class="hero__title">Concept stores rendered in any city.</h1>
+      <p class="hero__lede" id="subtitle"></p>
+    </header>
+
+    <!-- ───────────── Form card ───────────── -->
+    <form id="generateForm" class="card" novalidate>
+
+      <!-- Brand -->
+      <div class="row">
+        <div class="row__label">
+          <label for="brand" class="label">Brand</label>
+          <p class="hint">Choose one of ten recognisable brands.</p>
+        </div>
+        <div class="row__control">
+          <div class="select-wrap">
+            <select id="brand"></select>
+            <svg class="select-chevron" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider" />
+
+      <!-- Format (segmented control) -->
+      <div class="row">
+        <div class="row__label">
+          <label class="label">Format</label>
+          <p class="hint">Canvas orientation for the plate.</p>
+        </div>
+        <div class="row__control">
+          <div class="segmented" id="aspect" role="radiogroup" aria-label="Format">
+            <button type="button" class="seg" data-value="portrait" role="radio" aria-checked="true">
+              <span class="seg__primary">Portrait</span>
+              <span class="seg__hint">2 : 3</span>
+            </button>
+            <button type="button" class="seg" data-value="square" role="radio" aria-checked="false">
+              <span class="seg__primary">Square</span>
+              <span class="seg__hint">1 : 1</span>
+            </button>
+            <button type="button" class="seg" data-value="landscape" role="radio" aria-checked="false">
+              <span class="seg__primary">Landscape</span>
+              <span class="seg__hint">3 : 2</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider" />
+
+      <!-- Sites -->
+      <div class="row">
+        <div class="row__label">
+          <label class="label">Sites</label>
+          <p class="hint">Two cities blend; one keeps its own landmarks.</p>
+        </div>
+        <div class="row__control sites-grid">
+          <div class="field">
+            <span class="field__sublabel">Primary</span>
+            <div class="select-wrap">
+              <select id="city1" required></select>
+              <svg class="select-chevron" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+          </div>
+          <div class="field">
+            <span class="field__sublabel">Secondary <em>· optional</em></span>
+            <div class="select-wrap">
+              <select id="city2"></select>
+              <svg class="select-chevron" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider" />
+
+      <!-- Brief disclosure -->
+      <details class="brief">
+        <summary>
+          <span>Brief</span>
+          <span class="brief__hint">Show the assembled prompt</span>
+          <svg class="brief__chevron" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </summary>
+        <pre id="promptPreview" class="brief__body"></pre>
+        <button type="button" id="copyPrompt" class="link">Copy brief</button>
+      </details>
+
+      <hr class="divider" />
+
+      <!-- Access code -->
+      <div class="row">
+        <div class="row__label">
+          <label for="accessCode" class="label">
+            <svg class="lock" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 5V3.5a3 3 0 016 0V5M2.5 5h7a.5.5 0 01.5.5v4a.5.5 0 01-.5.5h-7a.5.5 0 01-.5-.5v-4a.5.5 0 01.5-.5z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Access code
+          </label>
+          <p class="hint">Required to generate. Ask the owner for one — it's saved locally afterwards.</p>
+        </div>
+        <div class="row__control">
+          <div class="text-input-wrap">
+            <input type="password" id="accessCode" placeholder="Paste your access code" autocomplete="off" class="text-input" />
+            <span id="accessStatus" class="text-input__status">Required</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <div class="submit-row">
+        <button type="submit" id="generateBtn" class="btn btn--primary">
+          Generate
+          <svg viewBox="0 0 14 14" aria-hidden="true"><path d="M3 11L11 3M11 3H5M11 3v6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </form>
+
+    <!-- ───────────── Result ───────────── -->
+    <section id="resultSection" class="card card--result" hidden>
+      <p id="resultStatus" class="status"></p>
+      <div id="resultImages" class="plate"></div>
+    </section>
+
+    <!-- ───────────── Footer info ───────────── -->
+    <section class="meta">
+      <dl class="meta__grid">
+        <div><dt>Renderer</dt><dd>OpenAI · gpt-image-2</dd></div>
+        <div><dt>Aspect</dt><dd id="colophonAspect">2 : 3 portrait</dd></div>
+        <div><dt>Style</dt><dd>Cinema 4D · blind-box</dd></div>
+        <div><dt>Light</dt><dd>Late-afternoon, warm</dd></div>
+      </dl>
+
+      <details class="errata">
+        <summary>
+          <span>Bring-your-own OpenAI key</span>
+          <span class="errata__hint">For local use without server credentials</span>
+        </summary>
+        <div class="errata__body">
+          <p>
+            The hosted version proxies through <code>/api/generate</code> using a server-side key —
+            you do not need this. For local development without <code>.dev.vars</code> configured,
+            paste your <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener">OpenAI API key</a>;
+            it stays in <code>localStorage</code>.
+          </p>
+          <div class="errata__field">
+            <input type="password" id="apiKey" placeholder="sk-..." autocomplete="off" />
+            <button id="saveKey" type="button" class="btn btn--ghost">Save</button>
+            <span id="keyStatus" class="errata__status"></span>
+          </div>
+        </div>
+      </details>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <span>City Merge</span>
+    <span>·</span>
+    <span>2026</span>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
