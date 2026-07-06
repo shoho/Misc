@@ -14,6 +14,7 @@ Antigravity のネイティブなカスタマイズ機構(**Rules / Workflows / 
 | スライド・資料の生成 | `/design-slides` |
 | Claude Code へのハンドオフバンドル | `/design-handoff` |
 | 常時適用されるデザイン品質基準 | `.agent/rules/design-principles.md` + `frontend-design` スキル |
+| 厳格度の切り替え(モデル性能に合わせる) | `/design-mode` |
 
 出力は画像モックではなく、ブラウザでそのまま開ける本物の HTML/CSS/JS です。Antigravity のブラウザ統合を使って、エージェント自身がスクリーンショットを撮って見た目を検証してから納品します。
 
@@ -135,13 +136,15 @@ antigravity-design/
 ├── README.md                     ← このファイル
 ├── .agent/                       ← Antigravity が自動認識するディレクトリ
 │   ├── rules/
-│   │   └── design-principles.md  ← デザイン系タスクで自動適用される品質基準
+│   │   ├── design-principles.md  ← デザイン系タスクで自動適用される品質基準
+│   │   └── design-strict.md      ← strict モード時のみ適用される追加制約
 │   ├── workflows/
 │   │   ├── design.md             ← /design
 │   │   ├── design-iterate.md     ← /design-iterate
 │   │   ├── design-system.md      ← /design-system
 │   │   ├── design-slides.md      ← /design-slides
-│   │   └── design-handoff.md     ← /design-handoff
+│   │   ├── design-handoff.md     ← /design-handoff
+│   │   └── design-mode.md        ← /design-mode(flex/strict 切り替え)
 │   └── skills/
 │       └── frontend-design/
 │           └── SKILL.md          ← 実装フェーズ用の詳細デザインガイド
@@ -152,9 +155,9 @@ antigravity-design/
 - **Workflows**:チャットで `/` から呼び出す定型手順。
 - **Skills**:ワークフローの実装フェーズで参照される詳細マニュアル(タイポグラフィ、両テーマの実装パターン、品質チェックリストなど)。
 
-## プロンプト設計の方針
+## プロンプト設計の方針(2つのモード)
 
-このキットの各プロンプトは、**中位クラスのモデル(Gemini Flash 級)でも安定して高品質な結果が出る**ように書かれています:
+各プロンプトは「センスで判断して」という抽象指示を避け、**数値基準・固定テンプレート・機械的な規則・チェックリスト**で書かれています:
 
 - **センスの言葉を数値基準に置換**:「コントラストを確保」ではなく「本文 4.5:1 以上・両テーマで」、「余白を丁寧に」ではなく「4px 基数のスケールからのみ取る」
 - **出力の形をテンプレートで固定**:tokens.css のスケルトン、design-system.md / HANDOFF.md の見出し構成、デザインプランのフォーマットを明示
@@ -163,7 +166,14 @@ antigravity-design/
 - **失敗の先回り**:ダークテーマの更新漏れ・生 HEX の直書き・固定高のはみ出しなど、生成物で繰り返し起きる不具合を明示的な禁止+出荷前チェックで潰す
 - **良い/悪いの具体例**:「汎用プラン ❌ / 題材固有プラン ✅」のように、抽象原則には必ず判定可能な例を添える
 
-高性能なモデルで使えばそのまま上振れします。基準を変えたい場合は該当ファイルの数値を書き換えるだけです。
+ただし数値基準を絶対にすると、上位モデルの「基準を意図的に破る良い判断」(ヒーローの劇的なタイプスケール、意図的な純ニュートラルなど)まで削ってしまいます。そこで厳格度を `/design-mode` で切り替えられます:
+
+| モード | 数値基準の扱い | 使いどころ |
+|---|---|---|
+| **flex(既定)** | 良い既定値。デザイン意図があれば逸脱可。ただし**逸脱箇所と理由をプランに1行明記**(黙って破るのは不可) | 上位モデルで上振れを狙う |
+| **strict**(`/design-mode strict`) | 逸脱不可。迷ったら控えめな標準を選ぶ | 中位モデル(Flash 級)、または複数回生成で一貫性が欲しいとき |
+
+コントラスト・アクセシビリティ・トークン経由の色参照・カスケード規約などの「床」は両モード共通で必ず守られます。状態は `designs/.design-mode` ファイル1つなので、Git にコミットすればチームで共有できます。常時 strict にしたい場合は `.agent/rules/design-strict.md` の trigger を `always_on` に変えてください。
 
 ## カスタマイズのヒント
 
