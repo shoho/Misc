@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GOOGLE — Company Briefing</title>
+<style>
+  /* ============================================================
+     NOT A HOTEL Design System — tokens(not-a-hotel/tokens.css を
+     デッキ用にインライン。スライドは黒面と白面を行き来する単一テーマの
+     意図的選択のため、テーマ切替ではなく .invert で面ごとに反転する)
+     ============================================================ */
+  :root {
+    --bg:          #FFFFFF;
+    --bg-alt:      #F7F7F7;
+    --line:        #E6E6E6;
+    --line-strong: #111111;
+    --ink:   #111111;
+    --ink-2: #6E6E6E;
+    --ink-3: #A3A3A3;
+    --action:     #111111;
+    --action-ink: #FFFFFF;
+
+    --font-display: "Helvetica Neue", "Neue Haas Grotesk", Helvetica, Arial,
+                    "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+    --font-body:    "Helvetica Neue", Helvetica, Arial,
+                    "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+
+    --text-xs:  0.75rem;
+    --text-sm:  0.875rem;
+    --text-md:  1rem;
+    --text-lg:  1.25rem;
+    --text-xl:  1.5625rem;
+    --text-2xl: 1.953rem;
+    --text-3xl: 2.441rem;
+    --text-4xl: 3.052rem;
+    --text-5xl: 3.815rem;
+    --text-6xl: 6rem;         /* デッキ専用: 表紙ロゴタイプ */
+
+    --leading-body:  1.8;
+    --leading-tight: 1.15;
+    --tracking-caps:    0.12em;
+    --tracking-display: 0.02em;
+
+    --space-1: 0.25rem; --space-2: 0.5rem; --space-3: 0.75rem; --space-4: 1rem;
+    --space-6: 1.5rem;  --space-8: 2rem;   --space-12: 3rem;   --space-16: 4rem;
+    --space-24: 6rem;
+
+    --duration-quick: 150ms;
+    --ease-out: cubic-bezier(0.25, 0.1, 0.25, 1);
+
+    /* チャート用グレースケール(識別はダイレクトラベルで担保) */
+    --seg-1: #111111;
+    --seg-2: #6E6E6E;
+    --seg-3: #A3A3A3;
+    --seg-4: #D4D4D4;
+  }
+  .invert {
+    --bg:          #0A0A0A;
+    --bg-alt:      #141414;
+    --line:        #2B2B2B;
+    --line-strong: #F5F5F5;
+    --ink:   #F5F5F5;
+    --ink-2: #9C9C9C;
+    --ink-3: #6B6B6B;
+    --action:     #F5F5F5;
+    --action-ink: #0A0A0A;
+  }
+
+  * { box-sizing: border-box; margin: 0; }
+  html, body { height: 100%; }
+  body {
+    background: #0A0A0A; /* レターボックス */
+    font-family: var(--font-body);
+    overflow: hidden;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition-duration: 1ms !important; animation-duration: 1ms !important; }
+  }
+  :focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+  .caps { text-transform: uppercase; letter-spacing: var(--tracking-caps); }
+
+  /* ===== stage(1280x720 固定を JS でスケール)===== */
+  .stage {
+    position: absolute; top: 50%; left: 50%;
+    width: 1280px; height: 720px;
+    transform: translate(-50%, -50%) scale(var(--scale, 1));
+  }
+  .slide {
+    position: absolute; inset: 0;
+    background: var(--bg); color: var(--ink);
+    padding: var(--space-16);
+    display: none;
+    flex-direction: column;
+  }
+  .slide.current { display: flex; }
+  .notes { display: none; }
+
+  /* スライド共通ヘッダ/フッタ */
+  .slide .kicker {
+    font-size: var(--text-xs); font-weight: 500; color: var(--ink-2);
+    text-transform: uppercase; letter-spacing: var(--tracking-caps);
+    margin-bottom: var(--space-8);
+  }
+  .slide .pagefoot {
+    margin-top: auto; padding-top: var(--space-6); border-top: 1px solid var(--line);
+    display: flex; justify-content: space-between;
+    font-size: var(--text-xs); color: var(--ink-3);
+    text-transform: uppercase; letter-spacing: var(--tracking-caps);
+  }
+  .slide h2 {
+    font-family: var(--font-display); font-weight: 500;
+    font-size: var(--text-3xl); line-height: var(--leading-tight);
+    text-wrap: balance; margin-bottom: var(--space-8);
+  }
+  .slide .body { font-size: var(--text-lg); line-height: var(--leading-body); max-width: 46ch; color: var(--ink-2); }
+  .num { font-variant-numeric: tabular-nums; }
+
+  /* ===== 1. 表紙 ===== */
+  .cover { justify-content: center; }
+  .cover .logo {
+    font-family: var(--font-display); font-weight: 500;
+    font-size: var(--text-6xl); line-height: 1;
+    text-transform: uppercase; letter-spacing: var(--tracking-display);
+  }
+  .cover .sub { font-size: var(--text-lg); color: var(--ink-2); margin-top: var(--space-8); }
+
+  /* ===== 3. 年表 ===== */
+  .timeline { display: grid; grid-template-columns: repeat(6, 1fr); border-top: 1px solid var(--line-strong); }
+  .timeline .t { padding: var(--space-6) var(--space-4) 0 0; border-right: 1px solid var(--line); }
+  .timeline .t:last-child { border-right: none; }
+  .timeline .y { font-family: var(--font-display); font-weight: 500; font-size: var(--text-xl); font-variant-numeric: tabular-nums; }
+  .timeline .e { font-size: var(--text-sm); color: var(--ink-2); margin-top: var(--space-2); line-height: 1.6; }
+
+  /* ===== 4. 規模(スタットタイル)===== */
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-8); flex: 1; align-content: center; }
+  .stat { border-top: 1px solid var(--line-strong); padding-top: var(--space-6); }
+  .stat .v { font-family: var(--font-display); font-weight: 500; font-size: var(--text-4xl); font-variant-numeric: tabular-nums; line-height: 1.1; }
+  .stat .l { font-size: var(--text-sm); color: var(--ink-2); margin-top: var(--space-3); line-height: 1.6; }
+
+  /* ===== 5. プロダクト ===== */
+  .products { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); flex: 1; }
+  .products .p { background: var(--bg); padding: var(--space-4) var(--space-6); display: flex; flex-direction: column; justify-content: center; }
+  .products .n { font-family: var(--font-display); font-weight: 500; font-size: var(--text-lg); text-transform: uppercase; letter-spacing: var(--tracking-display); }
+  .products .d { font-size: var(--text-sm); color: var(--ink-2); }
+
+  /* ===== 6. 収益構成バー ===== */
+  .mixbar { display: flex; gap: 2px; height: 96px; margin: var(--space-12) 0 var(--space-6); }
+  .mixbar .seg { display: flex; align-items: center; padding-left: var(--space-4); }
+  .mixbar .seg span { font-size: var(--text-sm); font-weight: 500; white-space: nowrap; }
+  .legend { display: flex; flex-wrap: wrap; gap: var(--space-8); }
+  .legend .li { display: flex; align-items: baseline; gap: var(--space-3); font-size: var(--text-sm); }
+  .legend .sw { width: 12px; height: 12px; align-self: center; border: 1px solid var(--line-strong); flex: none; }
+  .legend .amt { color: var(--ink-2); font-variant-numeric: tabular-nums; }
+
+  /* ===== 7. Alphabet 構造 ===== */
+  .org { display: grid; gap: var(--space-6); justify-items: start; }
+  .org .box { border: 1px solid var(--line-strong); padding: var(--space-4) var(--space-8); }
+  .org .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); width: 100%; }
+  .org .name { font-family: var(--font-display); font-weight: 500; font-size: var(--text-xl); text-transform: uppercase; letter-spacing: var(--tracking-display); }
+  .org .d { font-size: var(--text-sm); color: var(--ink-2); margin-top: var(--space-2); line-height: 1.7; }
+
+  /* ===== ナビ ===== */
+  .counter {
+    position: fixed; right: 16px; bottom: 12px;
+    font: 500 12px/1 var(--font-body); letter-spacing: 0.12em;
+    color: #6B6B6B; font-variant-numeric: tabular-nums;
+  }
+
+  /* ===== print: 1スライド=1ページ ===== */
+  @page { size: 1280px 720px; margin: 0; }
+  @media print {
+    body { background: #FFFFFF; overflow: visible; }
+    .stage { position: static; width: auto; height: auto; transform: none; }
+    .slide { position: relative; display: flex !important; width: 1280px; height: 720px; break-after: page; }
+    .counter { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+
+  <!-- 1. 表紙 -->
+  <section class="slide invert cover current" aria-label="1">
+    <p class="kicker">Company Briefing — 2026.07</p>
+    <div class="logo">Google</div>
+    <p class="sub">世界中の情報を、整理する会社。</p>
+    <div class="pagefoot"><span>Google とは何か</span><span>01</span></div>
+    <aside class="notes">導入。「検索エンジン」としてではなく、ミッドションドリブンな企業として紹介する構成であることを一言添える。</aside>
+  </section>
+
+  <!-- 2. 一言で -->
+  <section class="slide" aria-label="2">
+    <p class="kicker">Mission</p>
+    <h2>Google は「検索の会社」ではなく、<br>情報を整理する会社。</h2>
+    <p class="body">創業以来のミッションは一度も変わっていない ——「世界中の情報を整理し、世界中の人々がアクセスできて使えるようにすること」。検索も、地図も、メールも、AI も、すべてこの一文の実装である。</p>
+    <div class="pagefoot"><span>Google とは何か</span><span>02</span></div>
+    <aside class="notes">1998年、スタンフォード大学の大学院生 Larry Page と Sergey Brin が創業。ページ同士のリンク関係で重要度を測る PageRank が出発点。ミッション文は現在も公式の About に掲げられている。</aside>
+  </section>
+
+  <!-- 3. 歩み -->
+  <section class="slide" aria-label="3">
+    <p class="kicker">History</p>
+    <h2>ガレージの検索エンジンから、27 年。</h2>
+    <div class="timeline">
+      <div class="t"><div class="y num">1998</div><p class="e">ガレージで創業。検索エンジン公開</p></div>
+      <div class="t"><div class="y num">2004</div><p class="e">株式上場。Gmail 公開</p></div>
+      <div class="t"><div class="y num">2006</div><p class="e">YouTube を買収</p></div>
+      <div class="t"><div class="y num">2008</div><p class="e">Chrome 公開・Android 初端末</p></div>
+      <div class="t"><div class="y num">2015</div><p class="e">持株会社 Alphabet に再編</p></div>
+      <div class="t"><div class="y num">2023–</div><p class="e">生成 AI「Gemini」を軸に再構築</p></div>
+    </div>
+    <div class="pagefoot"><span>Google とは何か</span><span>03</span></div>
+    <aside class="notes">Android の買収自体は2005年。2015年の再編で CEO は Sundar Pichai に(2019年から Alphabet CEO も兼務)。2025年には年間売上が初めて4,000億ドルを超えた。</aside>
+  </section>
+
+  <!-- 4. 規模 -->
+  <section class="slide" aria-label="4">
+    <p class="kicker">Scale</p>
+    <h2>インターネットの「入口」をほぼ握っている。</h2>
+    <div class="stats">
+      <div class="stat"><div class="v num">約 90%</div><p class="l">世界の検索エンジンシェア(StatCounter)</p></div>
+      <div class="stat"><div class="v num">$402.8B</div><p class="l">2025年 年間売上(前年比 +15%)— 約60兆円</p></div>
+      <div class="stat"><div class="v num">18万人超</div><p class="l">全世界の従業員(Alphabet、2024年末)</p></div>
+    </div>
+    <div class="pagefoot"><span>Google とは何か</span><span>04</span></div>
+    <aside class="notes">売上は Alphabet 連結(2025年通期 $402.836B、前年比+15%)。円換算は概算。検索シェアは StatCounter の全デバイス合算でおおむね9割前後で推移。</aside>
+  </section>
+
+  <!-- 5. プロダクト -->
+  <section class="slide" aria-label="5">
+    <p class="kicker">Products</p>
+    <h2>10 億人が使う製品を、9 つ持つ。</h2>
+    <div class="products">
+      <div class="p"><span class="n">Search</span><span class="d">検索 — すべての起点</span></div>
+      <div class="p"><span class="n">YouTube</span><span class="d">動画 — 月間 25 億人超</span></div>
+      <div class="p"><span class="n">Android</span><span class="d">スマホ OS — 世界シェア約 7 割</span></div>
+      <div class="p"><span class="n">Chrome</span><span class="d">ブラウザ — 世界シェア首位</span></div>
+      <div class="p"><span class="n">Gmail</span><span class="d">メール</span></div>
+      <div class="p"><span class="n">Maps</span><span class="d">地図・ナビ</span></div>
+      <div class="p"><span class="n">Play</span><span class="d">アプリ配信</span></div>
+      <div class="p"><span class="n">Photos</span><span class="d">写真</span></div>
+      <div class="p"><span class="n">Drive</span><span class="d">ストレージ</span></div>
+    </div>
+    <div class="pagefoot"><span>Google とは何か</span><span>05</span></div>
+    <aside class="notes">「10億ユーザー製品が9つ」は Google が繰り返し公表してきた数字。Gemini アプリも急成長しており、この仲間入りが近い。どの製品も無料で、後述の広告モデルが支えている。</aside>
+  </section>
+
+  <!-- 6. ビジネスモデル -->
+  <section class="slide" aria-label="6">
+    <p class="kicker">Business Model</p>
+    <h2>売上の約 4 分の 3 は、広告。</h2>
+    <p class="body" style="max-width:60ch">無料の製品で人が集まる場所をつくり、そこに広告を載せる。検索連動広告と YouTube 広告がその中心にある。</p>
+    <div class="mixbar" role="img" aria-label="2025年の収益構成。広告 2,947億ドルで73%、クラウド 約590億ドルで15%、サブスクリプション・デバイスなど 約470億ドルで12%、その他 約20億ドル">
+      <div class="seg" style="flex:73;background:var(--seg-1)"><span style="color:var(--action-ink)">広告 73%</span></div>
+      <div class="seg" style="flex:15;background:var(--seg-2)"><span style="color:#FFFFFF">15%</span></div>
+      <div class="seg" style="flex:12;background:var(--seg-3)"></div>
+      <div class="seg" style="flex:1;background:var(--seg-4);padding:0"></div>
+    </div>
+    <div class="legend">
+      <div class="li"><span class="sw" style="background:var(--seg-1)"></span>広告(検索・YouTube・ネットワーク)<span class="amt">$294.7B</span></div>
+      <div class="li"><span class="sw" style="background:var(--seg-2)"></span>Google Cloud<span class="amt">約 $59B</span></div>
+      <div class="li"><span class="sw" style="background:var(--seg-3)"></span>サブスク・デバイスなど<span class="amt">約 $47B</span></div>
+      <div class="li"><span class="sw" style="background:var(--seg-4)"></span>その他<span class="amt">約 $2B</span></div>
+    </div>
+    <div class="pagefoot"><span>Google とは何か</span><span>06</span></div>
+    <aside class="notes">出典: Alphabet 2025年Q4決算(通期 $402.8B)。広告 $294.691B の内訳は検索ほか $224.5B / YouTube 広告 $40.4B / ネットワーク $29.8B。Cloud・サブスクは四半期開示の合算による概算値。</aside>
+  </section>
+
+  <!-- 7. 中扉: Alphabet -->
+  <section class="slide invert" aria-label="7">
+    <p class="kicker">Structure</p>
+    <h2 style="font-size:var(--text-4xl)">Google は、Alphabet の中核子会社。</h2>
+    <div class="org" style="margin-top:var(--space-8)">
+      <div class="box"><span class="name">Alphabet</span><p class="d">持株会社(2015–)。CEO: Sundar Pichai</p></div>
+      <div class="row2">
+        <div class="box"><span class="name">Google</span><p class="d">検索・YouTube・Android・Cloud など。売上のほぼすべてを稼ぐ</p></div>
+        <div class="box"><span class="name">Other Bets</span><p class="d">Waymo(自動運転)、Verily(医療)など長期の賭け</p></div>
+      </div>
+    </div>
+    <div class="pagefoot"><span>Google とは何か</span><span>07</span></div>
+    <aside class="notes">再編の狙いは「本業」と「長期投資」の分離。AI 研究の DeepMind は現在 Google 本体に統合され、Gemini を開発している。</aside>
+  </section>
+
+  <!-- 8. AI 時代 -->
+  <section class="slide" aria-label="8">
+    <p class="kicker">Now</p>
+    <h2>いま、全製品を AI「Gemini」で作り直している。</h2>
+    <div class="stats">
+      <div class="stat"><div class="v num">20 億人/月</div><p class="l">検索の AI 要約「AI Overviews」の利用者</p></div>
+      <div class="stat"><div class="v num">6.5 億 MAU</div><p class="l">Gemini アプリの月間利用者(2025年後半)</p></div>
+      <div class="stat"><div class="v num">+48%</div><p class="l">Google Cloud 四半期売上の伸び(2025年Q4)— AI 需要が牽引</p></div>
+    </div>
+    <div class="pagefoot"><span>Google とは何か</span><span>08</span></div>
+    <aside class="notes">2023年の ChatGPT ショック以降、検索・Workspace・Android・Cloud のすべてに Gemini を組み込む戦略へ。自社設計チップ TPU とデータセンターへの巨額投資が裏側にある。競合は OpenAI、Anthropic、Microsoft、Meta。</aside>
+  </section>
+
+  <!-- 9. まとめ -->
+  <section class="slide" aria-label="9">
+    <p class="kicker">Summary</p>
+    <h2>Google を 3 行で。</h2>
+    <div style="display:grid;gap:var(--space-6);max-width:56ch">
+      <p style="font-size:var(--text-xl);line-height:1.6;border-top:1px solid var(--line-strong);padding-top:var(--space-4)"><strong>1.</strong> 「世界中の情報を整理する」を 27 年実装し続けている会社。</p>
+      <p style="font-size:var(--text-xl);line-height:1.6;border-top:1px solid var(--line-strong);padding-top:var(--space-4)"><strong>2.</strong> 無料製品に人を集め、広告で売上の約 4 分の 3 を稼ぐ。</p>
+      <p style="font-size:var(--text-xl);line-height:1.6;border-top:1px solid var(--line-strong);padding-top:var(--space-4)"><strong>3.</strong> 次の 10 年は、そのすべてを Gemini で作り直す賭けに出ている。</p>
+    </div>
+    <div class="pagefoot"><span>Google とは何か</span><span>09</span></div>
+    <aside class="notes">質疑用の補足: 独占禁止訴訟(検索の独占認定と是正措置)、EU DMA などの規制リスクはこの3行の外側にある最大の変数。</aside>
+  </section>
+
+  <!-- 10. 出典 -->
+  <section class="slide invert" aria-label="10">
+    <p class="kicker">Sources</p>
+    <h2 style="font-size:var(--text-4xl)">Thank You</h2>
+    <div class="body" style="font-size:var(--text-sm);max-width:70ch">
+      <p>数字の出典 — Alphabet Q4 &amp; FY2025 決算発表(売上・収益構成)/ StatCounter(検索シェア)/ Google・Alphabet の公表値(製品ユーザー数、AI Overviews、Gemini MAU)。円換算・「約」表記は概算。2026年7月時点。</p>
+    </div>
+    <div class="pagefoot"><span>Google とは何か — NOT A HOTEL Design System で作成</span><span>10</span></div>
+    <aside class="notes">このデッキは not-a-hotel/tokens.css のトークン(モノクローム・直角・大文字トラッキング)に従って生成。修正は /design-iterate で。</aside>
+  </section>
+
+</div>
+<div class="counter" id="counter" aria-live="polite">1 / 10</div>
+
+<script>
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var i = 0;
+  function show(n) {
+    i = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach(function (s, k) { s.classList.toggle('current', k === i); });
+    document.getElementById('counter').textContent = (i + 1) + ' / ' + slides.length;
+  }
+  function fit() {
+    var s = Math.min(window.innerWidth / 1280, window.innerHeight / 720);
+    document.getElementById('stage').style.setProperty('--scale', s);
+  }
+  window.addEventListener('resize', fit);
+  window.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { show(i + 1); e.preventDefault(); }
+    if (e.key === 'ArrowLeft' || e.key === 'PageUp') { show(i - 1); e.preventDefault(); }
+    if (e.key === 'Home') show(0);
+    if (e.key === 'End') show(slides.length - 1);
+  });
+  document.getElementById('stage').addEventListener('click', function () { show(i + 1); });
+  fit(); show(0);
+</script>
+</body>
+</html>
