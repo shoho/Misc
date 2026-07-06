@@ -17,6 +17,20 @@ Antigravity のネイティブなカスタマイズ機構(**Rules / Workflows / 
 
 出力は画像モックではなく、ブラウザでそのまま開ける本物の HTML/CSS/JS です。Antigravity のブラウザ統合を使って、エージェント自身がスクリーンショットを撮って見た目を検証してから納品します。
 
+## デフォルトのデザインシステム(Google ブランド)
+
+このキットには、**Google のカンパニーブランドを元にしたデザインシステムがデフォルトで同梱**されています。`/design` 系ワークフローは、別のブランドを指定しない限り自動的にこれに従います。
+
+- `designs/tokens.css` — 全トークン(カラー・タイポグラフィ・シェイプ・エレベーション・モーション、ライト/ダーク両テーマ)
+- `designs/design-system.md` — ガイドライン(トークンの使い方、コンポーネント基本形、Do/Don't、出典)
+- `designs/design-system/index.html` — ブラウザで開けるスタイルガイド(テーマ切替付き)
+- `designs/assets/icons/material-symbols/` — Google 公式 [Material Symbols](https://fonts.google.com/icons) の SVG 60種(アイコンは自作せずこれを使う)
+- `designs/assets/fonts/` — [Roboto](https://fonts.google.com/specimen/Roboto) 可変フォント(公式配布物)
+
+すべての値は Google の公式ソースのみから生成しています(ブランドカラーは [Partner Marketing Hub](https://partnermarketinghub.withgoogle.com/brands/google/overview/)、カラースキームは公式ライブラリ `@material/material-color-utilities`、構造トークンは公式パッケージ `@material/web` の Material 3 トークン)。出典の詳細は `designs/design-system.md` を参照してください。
+
+自分のブランドに差し替えるには、`/design-system` を実行する(上記2ファイルが再生成されます)か、ファイルを直接編集します。
+
 ## セットアップ
 
 方法は2つあります。
@@ -145,6 +159,10 @@ antigravity-design/
 │       └── frontend-design/
 │           └── SKILL.md          ← 実装フェーズ用の詳細デザインガイド
 └── designs/                      ← 生成物の出力先(プロトタイプ・トークン・ハンドオフ)
+    ├── tokens.css                ← デフォルト: Google ブランドのデザイントークン
+    ├── design-system.md          ← デフォルト: ガイドライン(出典付き)
+    ├── design-system/index.html  ← デフォルト: スタイルガイド(両テーマ)
+    └── assets/                   ← 公式アイコン(Material Symbols)・公式フォント(Roboto)
 ```
 
 - **Rules**(`trigger: model_decision`):デザイン関連のタスクだとエージェントが判断したときに自動で読み込まれる原則。常時読み込み(`always_on`)にしていないのは、デザイン以外の作業でコンテキストを圧迫しないためです。

@@ -1,0 +1,424 @@
+/*
+ * Google ブランド デザインシステム — トークン定義
+ * ==================================================
+ * すべての値は Google の公式ソースのみから生成:
+ *
+ * - ブランドカラー(#4285F4 / #EA4335 / #FBBC04 / #34A853):
+ *   Google Partner Marketing Hub(partnermarketinghub.withgoogle.com)
+ * - カラースキーム(sys ロール):上記ブランドカラーをソースに、Google 公式
+ *   ライブラリ @material/material-color-utilities(HCT / Material Theme Builder
+ *   と同一アルゴリズム、SchemeVibrant・コントラスト 0)で生成
+ * - タイポグラフィ / シェイプ / ステート / エレベーション / モーション:
+ *   Google 公式 npm パッケージ @material/web の Material 3 トークン
+ *   (Design system version: v0.192)
+ * - 書体:Roboto(fonts.google.com、可変フォントを assets/fonts/ に同梱)
+ * - アイコン:Material Symbols(fonts.google.com/icons、assets/icons/ に同梱)
+ *
+ * 生成日: 2026-07-06 / 詳しい使い方は design-system.md を参照
+ */
+
+/* ---- Roboto(公式配布の可変フォント・latin サブセット同梱) ---- */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('./assets/fonts/roboto-latin-variable.woff2') format('woff2');
+}
+
+/* =============================================================
+ * 1/4 — ライトテーマ(既定)
+ * ============================================================= */
+:root {
+  color-scheme: light;
+
+  /* ---- ブランド参照トークン(公式ロゴカラー。UI の地色には使わず、
+          ブランドモーメント・データビジュアライゼーション・ロゴ周りに) ---- */
+  --google-blue: #4285F4;
+  --google-red: #EA4335;
+  --google-yellow: #FBBC04;
+  --google-green: #34A853;
+
+  /* ---- Material 3 カラーロール(ソース: Google Blue #4285F4) ---- */
+  --md-sys-color-primary: #005ac1;
+  --md-sys-color-on-primary: #ffffff;
+  --md-sys-color-primary-container: #d8e2ff;
+  --md-sys-color-on-primary-container: #001a41;
+  --md-sys-color-secondary: #595c7e;
+  --md-sys-color-on-secondary: #ffffff;
+  --md-sys-color-secondary-container: #dfe0ff;
+  --md-sys-color-on-secondary-container: #151937;
+  --md-sys-color-tertiary: #625789;
+  --md-sys-color-on-tertiary: #ffffff;
+  --md-sys-color-tertiary-container: #e7deff;
+  --md-sys-color-on-tertiary-container: #1e1341;
+  --md-sys-color-error: #ba1a1a;
+  --md-sys-color-on-error: #ffffff;
+  --md-sys-color-error-container: #ffdad6;
+  --md-sys-color-on-error-container: #410002;
+  --md-sys-color-background: #f9f9ff;
+  --md-sys-color-on-background: #181c25;
+  --md-sys-color-surface: #f9f9ff;
+  --md-sys-color-on-surface: #181c25;
+  --md-sys-color-surface-variant: #dee2f2;
+  --md-sys-color-on-surface-variant: #424753;
+  --md-sys-color-surface-dim: #d7d9e6;
+  --md-sys-color-surface-bright: #f9f9ff;
+  --md-sys-color-surface-container-lowest: #ffffff;
+  --md-sys-color-surface-container-low: #f1f3ff;
+  --md-sys-color-surface-container: #ebedfa;
+  --md-sys-color-surface-container-high: #e5e8f5;
+  --md-sys-color-surface-container-highest: #dfe2ef;
+  --md-sys-color-outline: #727785;
+  --md-sys-color-outline-variant: #c2c6d6;
+  --md-sys-color-shadow: #000000;
+  --md-sys-color-scrim: #000000;
+  --md-sys-color-inverse-surface: #2c303a;
+  --md-sys-color-inverse-on-surface: #eef0fd;
+  --md-sys-color-inverse-primary: #adc6ff;
+  --md-sys-color-surface-tint: #005ac1;
+  --md-sys-color-primary-fixed: #d8e2ff;
+  --md-sys-color-primary-fixed-dim: #adc6ff;
+  --md-sys-color-on-primary-fixed: #001a41;
+  --md-sys-color-on-primary-fixed-variant: #004494;
+
+  /* セマンティック(success/warning は Google Green / Yellow 由来のカスタムカラー) */
+  --md-sys-color-success: #006e2c;
+  --md-sys-color-on-success: #ffffff;
+  --md-sys-color-success-container: #89fa9b;
+  --md-sys-color-on-success-container: #002108;
+  --md-sys-color-warning: #795900;
+  --md-sys-color-on-warning: #ffffff;
+  --md-sys-color-warning-container: #ffdfa0;
+  --md-sys-color-on-warning-container: #261a00;
+
+  /* ---- 書体(md.ref.typeface) ----
+     brand = 見出し用 / plain = 本文用。公式 3P トークンはともに Roboto。
+     ('Google Sans' は Google 専用書体のため一般配布されていない) */
+  --md-ref-typeface-brand: 'Roboto', 'Helvetica Neue', Arial,
+    'Hiragino Kaku Gothic ProN', 'Noto Sans JP', Meiryo, sans-serif;
+  --md-ref-typeface-plain: 'Roboto', 'Helvetica Neue', Arial,
+    'Hiragino Kaku Gothic ProN', 'Noto Sans JP', Meiryo, sans-serif;
+
+  /* ---- タイプスケール(md.sys.typescale v0.192) ---- */
+  --md-sys-typescale-display-large-font: var(--md-ref-typeface-brand);
+  --md-sys-typescale-display-large-size: 3.5625rem;
+  --md-sys-typescale-display-large-line-height: 4rem;
+  --md-sys-typescale-display-large-tracking: -0.015625rem;
+  --md-sys-typescale-display-large-weight: 400;
+  --md-sys-typescale-display-medium-font: var(--md-ref-typeface-brand);
+  --md-sys-typescale-display-medium-size: 2.8125rem;
+  --md-sys-typescale-display-medium-line-height: 3.25rem;
+  --md-sys-typescale-display-medium-tracking: 0;
+  --md-sys-typescale-display-medium-weight: 400;
+  --md-sys-typescale-display-small-font: var(--md-ref-typeface-brand);
+  --md-sys-typescale-display-small-size: 2.25rem;
+  --md-sys-typescale-display-small-line-height: 2.75rem;
+  --md-sys-typescale-display-small-tracking: 0;
+  --md-sys-typescale-display-small-weight: 400;
+  --md-sys-typescale-headline-large-font: var(--md-ref-typeface-brand);
+  --md-sys-typescale-headline-large-size: 2rem;
+  --md-sys-typescale-headline-large-line-height: 2.5rem;
+  --md-sys-typescale-headline-large-tracking: 0;
+  --md-sys-typescale-headline-large-weight: 400;
+  --md-sys-typescale-headline-medium-font: var(--md-ref-typeface-brand);
+  --md-sys-typescale-headline-medium-size: 1.75rem;
+  --md-sys-typescale-headline-medium-line-height: 2.25rem;
+  --md-sys-typescale-headline-medium-tracking: 0;
+  --md-sys-typescale-headline-medium-weight: 400;
+  --md-sys-typescale-headline-small-font: var(--md-ref-typeface-brand);
+  --md-sys-typescale-headline-small-size: 1.5rem;
+  --md-sys-typescale-headline-small-line-height: 2rem;
+  --md-sys-typescale-headline-small-tracking: 0;
+  --md-sys-typescale-headline-small-weight: 400;
+  --md-sys-typescale-title-large-font: var(--md-ref-typeface-brand);
+  --md-sys-typescale-title-large-size: 1.375rem;
+  --md-sys-typescale-title-large-line-height: 1.75rem;
+  --md-sys-typescale-title-large-tracking: 0;
+  --md-sys-typescale-title-large-weight: 400;
+  --md-sys-typescale-title-medium-font: var(--md-ref-typeface-plain);
+  --md-sys-typescale-title-medium-size: 1rem;
+  --md-sys-typescale-title-medium-line-height: 1.5rem;
+  --md-sys-typescale-title-medium-tracking: 0.009375rem;
+  --md-sys-typescale-title-medium-weight: 500;
+  --md-sys-typescale-title-small-font: var(--md-ref-typeface-plain);
+  --md-sys-typescale-title-small-size: 0.875rem;
+  --md-sys-typescale-title-small-line-height: 1.25rem;
+  --md-sys-typescale-title-small-tracking: 0.00625rem;
+  --md-sys-typescale-title-small-weight: 500;
+  --md-sys-typescale-body-large-font: var(--md-ref-typeface-plain);
+  --md-sys-typescale-body-large-size: 1rem;
+  --md-sys-typescale-body-large-line-height: 1.5rem;
+  --md-sys-typescale-body-large-tracking: 0.03125rem;
+  --md-sys-typescale-body-large-weight: 400;
+  --md-sys-typescale-body-medium-font: var(--md-ref-typeface-plain);
+  --md-sys-typescale-body-medium-size: 0.875rem;
+  --md-sys-typescale-body-medium-line-height: 1.25rem;
+  --md-sys-typescale-body-medium-tracking: 0.015625rem;
+  --md-sys-typescale-body-medium-weight: 400;
+  --md-sys-typescale-body-small-font: var(--md-ref-typeface-plain);
+  --md-sys-typescale-body-small-size: 0.75rem;
+  --md-sys-typescale-body-small-line-height: 1rem;
+  --md-sys-typescale-body-small-tracking: 0.025rem;
+  --md-sys-typescale-body-small-weight: 400;
+  --md-sys-typescale-label-large-font: var(--md-ref-typeface-plain);
+  --md-sys-typescale-label-large-size: 0.875rem;
+  --md-sys-typescale-label-large-line-height: 1.25rem;
+  --md-sys-typescale-label-large-tracking: 0.00625rem;
+  --md-sys-typescale-label-large-weight: 500;
+  --md-sys-typescale-label-medium-font: var(--md-ref-typeface-plain);
+  --md-sys-typescale-label-medium-size: 0.75rem;
+  --md-sys-typescale-label-medium-line-height: 1rem;
+  --md-sys-typescale-label-medium-tracking: 0.03125rem;
+  --md-sys-typescale-label-medium-weight: 500;
+  --md-sys-typescale-label-small-font: var(--md-ref-typeface-plain);
+  --md-sys-typescale-label-small-size: 0.6875rem;
+  --md-sys-typescale-label-small-line-height: 1rem;
+  --md-sys-typescale-label-small-tracking: 0.03125rem;
+  --md-sys-typescale-label-small-weight: 500;
+
+  /* ---- シェイプ(md.sys.shape corner radius) ---- */
+  --md-sys-shape-corner-none: 0px;
+  --md-sys-shape-corner-extra-small: 4px;
+  --md-sys-shape-corner-small: 8px;
+  --md-sys-shape-corner-medium: 12px;
+  --md-sys-shape-corner-large: 16px;
+  --md-sys-shape-corner-extra-large: 28px;
+  --md-sys-shape-corner-full: 9999px;
+
+  /* ---- ステートレイヤー不透明度(md.sys.state) ---- */
+  --md-sys-state-hover-state-layer-opacity: 0.08;
+  --md-sys-state-focus-state-layer-opacity: 0.12;
+  --md-sys-state-pressed-state-layer-opacity: 0.12;
+  --md-sys-state-dragged-state-layer-opacity: 0.16;
+
+  /* ---- エレベーション(md.sys.elevation level0–5 の box-shadow。
+          key shadow 30% + ambient shadow 15%、@material/web と同値) ---- */
+  --md-sys-elevation-level0: none;
+  --md-sys-elevation-level1: 0px 1px 2px 0px rgba(0, 0, 0, 0.3),
+    0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+  --md-sys-elevation-level2: 0px 1px 2px 0px rgba(0, 0, 0, 0.3),
+    0px 2px 6px 2px rgba(0, 0, 0, 0.15);
+  --md-sys-elevation-level3: 0px 1px 3px 0px rgba(0, 0, 0, 0.3),
+    0px 4px 8px 3px rgba(0, 0, 0, 0.15);
+  --md-sys-elevation-level4: 0px 2px 3px 0px rgba(0, 0, 0, 0.3),
+    0px 6px 10px 4px rgba(0, 0, 0, 0.15);
+  --md-sys-elevation-level5: 0px 4px 4px 0px rgba(0, 0, 0, 0.3),
+    0px 8px 12px 6px rgba(0, 0, 0, 0.15);
+
+  /* ---- モーション(md.sys.motion) ---- */
+  --md-sys-motion-easing-emphasized: cubic-bezier(0.2, 0, 0, 1);
+  --md-sys-motion-easing-emphasized-accelerate: cubic-bezier(0.3, 0, 0.8, 0.15);
+  --md-sys-motion-easing-emphasized-decelerate: cubic-bezier(0.05, 0.7, 0.1, 1);
+  --md-sys-motion-easing-standard: cubic-bezier(0.2, 0, 0, 1);
+  --md-sys-motion-easing-standard-accelerate: cubic-bezier(0.3, 0, 1, 1);
+  --md-sys-motion-easing-standard-decelerate: cubic-bezier(0, 0, 0, 1);
+  --md-sys-motion-duration-short1: 50ms;
+  --md-sys-motion-duration-short2: 100ms;
+  --md-sys-motion-duration-short3: 150ms;
+  --md-sys-motion-duration-short4: 200ms;
+  --md-sys-motion-duration-medium1: 250ms;
+  --md-sys-motion-duration-medium2: 300ms;
+  --md-sys-motion-duration-medium3: 350ms;
+  --md-sys-motion-duration-medium4: 400ms;
+  --md-sys-motion-duration-long1: 450ms;
+  --md-sys-motion-duration-long2: 500ms;
+  --md-sys-motion-duration-long3: 550ms;
+  --md-sys-motion-duration-long4: 600ms;
+
+  /* ---- スペーシング(Material 3 の 4dp グリッドに基づく) ---- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  /* ブレークポイント(M3 window size classes)は CSS 変数で参照できないため
+     メディアクエリで直接使う:
+     compact < 600px / medium 600–839px / expanded 840–1199px
+     large 1200–1599px / extra-large >= 1600px */
+}
+
+/* =============================================================
+ * 2/4 — OS がダークのとき(手動指定が無い場合)
+ * ============================================================= */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+
+    --md-sys-color-primary: #adc6ff;
+    --md-sys-color-on-primary: #002e69;
+    --md-sys-color-primary-container: #004494;
+    --md-sys-color-on-primary-container: #d8e2ff;
+    --md-sys-color-secondary: #c1c4eb;
+    --md-sys-color-on-secondary: #2b2e4d;
+    --md-sys-color-secondary-container: #414465;
+    --md-sys-color-on-secondary-container: #dfe0ff;
+    --md-sys-color-tertiary: #ccbff8;
+    --md-sys-color-on-tertiary: #332958;
+    --md-sys-color-tertiary-container: #4a4070;
+    --md-sys-color-on-tertiary-container: #e7deff;
+    --md-sys-color-error: #ffb4ab;
+    --md-sys-color-on-error: #690005;
+    --md-sys-color-error-container: #93000a;
+    --md-sys-color-on-error-container: #ffdad6;
+    --md-sys-color-background: #0f131c;
+    --md-sys-color-on-background: #dfe2ef;
+    --md-sys-color-surface: #0f131c;
+    --md-sys-color-on-surface: #dfe2ef;
+    --md-sys-color-surface-variant: #424753;
+    --md-sys-color-on-surface-variant: #c2c6d6;
+    --md-sys-color-surface-dim: #0f131c;
+    --md-sys-color-surface-bright: #353943;
+    --md-sys-color-surface-container-lowest: #0a0e17;
+    --md-sys-color-surface-container-low: #181c25;
+    --md-sys-color-surface-container: #1c2029;
+    --md-sys-color-surface-container-high: #262a33;
+    --md-sys-color-surface-container-highest: #31353f;
+    --md-sys-color-outline: #8c909f;
+    --md-sys-color-outline-variant: #424753;
+    --md-sys-color-shadow: #000000;
+    --md-sys-color-scrim: #000000;
+    --md-sys-color-inverse-surface: #dfe2ef;
+    --md-sys-color-inverse-on-surface: #2c303a;
+    --md-sys-color-inverse-primary: #005ac1;
+    --md-sys-color-surface-tint: #adc6ff;
+    --md-sys-color-primary-fixed: #d8e2ff;
+    --md-sys-color-primary-fixed-dim: #adc6ff;
+    --md-sys-color-on-primary-fixed: #001a41;
+    --md-sys-color-on-primary-fixed-variant: #004494;
+
+    /* セマンティック(success/warning は Google Green / Yellow 由来のカスタムカラー) */
+    --md-sys-color-success: #6ddd81;
+    --md-sys-color-on-success: #003914;
+    --md-sys-color-success-container: #005320;
+    --md-sys-color-on-success-container: #89fa9b;
+    --md-sys-color-warning: #fbbc05;
+    --md-sys-color-on-warning: #402d00;
+    --md-sys-color-warning-container: #5c4300;
+    --md-sys-color-on-warning-container: #ffdfa0;
+  }
+}
+
+/* =============================================================
+ * 3/4 — 手動ダーク(<html data-theme="dark">)
+ * ============================================================= */
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  --md-sys-color-primary: #adc6ff;
+  --md-sys-color-on-primary: #002e69;
+  --md-sys-color-primary-container: #004494;
+  --md-sys-color-on-primary-container: #d8e2ff;
+  --md-sys-color-secondary: #c1c4eb;
+  --md-sys-color-on-secondary: #2b2e4d;
+  --md-sys-color-secondary-container: #414465;
+  --md-sys-color-on-secondary-container: #dfe0ff;
+  --md-sys-color-tertiary: #ccbff8;
+  --md-sys-color-on-tertiary: #332958;
+  --md-sys-color-tertiary-container: #4a4070;
+  --md-sys-color-on-tertiary-container: #e7deff;
+  --md-sys-color-error: #ffb4ab;
+  --md-sys-color-on-error: #690005;
+  --md-sys-color-error-container: #93000a;
+  --md-sys-color-on-error-container: #ffdad6;
+  --md-sys-color-background: #0f131c;
+  --md-sys-color-on-background: #dfe2ef;
+  --md-sys-color-surface: #0f131c;
+  --md-sys-color-on-surface: #dfe2ef;
+  --md-sys-color-surface-variant: #424753;
+  --md-sys-color-on-surface-variant: #c2c6d6;
+  --md-sys-color-surface-dim: #0f131c;
+  --md-sys-color-surface-bright: #353943;
+  --md-sys-color-surface-container-lowest: #0a0e17;
+  --md-sys-color-surface-container-low: #181c25;
+  --md-sys-color-surface-container: #1c2029;
+  --md-sys-color-surface-container-high: #262a33;
+  --md-sys-color-surface-container-highest: #31353f;
+  --md-sys-color-outline: #8c909f;
+  --md-sys-color-outline-variant: #424753;
+  --md-sys-color-shadow: #000000;
+  --md-sys-color-scrim: #000000;
+  --md-sys-color-inverse-surface: #dfe2ef;
+  --md-sys-color-inverse-on-surface: #2c303a;
+  --md-sys-color-inverse-primary: #005ac1;
+  --md-sys-color-surface-tint: #adc6ff;
+  --md-sys-color-primary-fixed: #d8e2ff;
+  --md-sys-color-primary-fixed-dim: #adc6ff;
+  --md-sys-color-on-primary-fixed: #001a41;
+  --md-sys-color-on-primary-fixed-variant: #004494;
+
+  /* セマンティック(success/warning は Google Green / Yellow 由来のカスタムカラー) */
+  --md-sys-color-success: #6ddd81;
+  --md-sys-color-on-success: #003914;
+  --md-sys-color-success-container: #005320;
+  --md-sys-color-on-success-container: #89fa9b;
+  --md-sys-color-warning: #fbbc05;
+  --md-sys-color-on-warning: #402d00;
+  --md-sys-color-warning-container: #5c4300;
+  --md-sys-color-on-warning-container: #ffdfa0;
+}
+
+/* =============================================================
+ * 4/4 — 手動ライト(<html data-theme="light">)
+ * ============================================================= */
+:root[data-theme='light'] {
+  color-scheme: light;
+
+  --md-sys-color-primary: #005ac1;
+  --md-sys-color-on-primary: #ffffff;
+  --md-sys-color-primary-container: #d8e2ff;
+  --md-sys-color-on-primary-container: #001a41;
+  --md-sys-color-secondary: #595c7e;
+  --md-sys-color-on-secondary: #ffffff;
+  --md-sys-color-secondary-container: #dfe0ff;
+  --md-sys-color-on-secondary-container: #151937;
+  --md-sys-color-tertiary: #625789;
+  --md-sys-color-on-tertiary: #ffffff;
+  --md-sys-color-tertiary-container: #e7deff;
+  --md-sys-color-on-tertiary-container: #1e1341;
+  --md-sys-color-error: #ba1a1a;
+  --md-sys-color-on-error: #ffffff;
+  --md-sys-color-error-container: #ffdad6;
+  --md-sys-color-on-error-container: #410002;
+  --md-sys-color-background: #f9f9ff;
+  --md-sys-color-on-background: #181c25;
+  --md-sys-color-surface: #f9f9ff;
+  --md-sys-color-on-surface: #181c25;
+  --md-sys-color-surface-variant: #dee2f2;
+  --md-sys-color-on-surface-variant: #424753;
+  --md-sys-color-surface-dim: #d7d9e6;
+  --md-sys-color-surface-bright: #f9f9ff;
+  --md-sys-color-surface-container-lowest: #ffffff;
+  --md-sys-color-surface-container-low: #f1f3ff;
+  --md-sys-color-surface-container: #ebedfa;
+  --md-sys-color-surface-container-high: #e5e8f5;
+  --md-sys-color-surface-container-highest: #dfe2ef;
+  --md-sys-color-outline: #727785;
+  --md-sys-color-outline-variant: #c2c6d6;
+  --md-sys-color-shadow: #000000;
+  --md-sys-color-scrim: #000000;
+  --md-sys-color-inverse-surface: #2c303a;
+  --md-sys-color-inverse-on-surface: #eef0fd;
+  --md-sys-color-inverse-primary: #adc6ff;
+  --md-sys-color-surface-tint: #005ac1;
+  --md-sys-color-primary-fixed: #d8e2ff;
+  --md-sys-color-primary-fixed-dim: #adc6ff;
+  --md-sys-color-on-primary-fixed: #001a41;
+  --md-sys-color-on-primary-fixed-variant: #004494;
+
+  /* セマンティック(success/warning は Google Green / Yellow 由来のカスタムカラー) */
+  --md-sys-color-success: #006e2c;
+  --md-sys-color-on-success: #ffffff;
+  --md-sys-color-success-container: #89fa9b;
+  --md-sys-color-on-success-container: #002108;
+  --md-sys-color-warning: #795900;
+  --md-sys-color-on-warning: #ffffff;
+  --md-sys-color-warning-container: #ffdfa0;
+  --md-sys-color-on-warning-container: #261a00;
+}
