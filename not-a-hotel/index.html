@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NOT A HOTEL — Design System</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+  /* ===== base ===== */
+  * { box-sizing: border-box; margin: 0; }
+  html { color-scheme: light dark; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: var(--text-md);
+    line-height: var(--leading-body);
+  }
+  h1, h2, h3 { font-family: var(--font-display); font-weight: 500; line-height: var(--leading-tight); text-wrap: balance; }
+  h2 { font-size: var(--text-2xl); text-transform: uppercase; letter-spacing: var(--tracking-display); }
+  p  { max-width: 65ch; }
+  code { font-family: var(--font-mono); font-size: 0.85em; background: var(--bg-sunken); padding: 1px 5px; }
+  a { color: var(--ink); text-underline-offset: 4px; }
+  :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition-duration: 1ms !important; animation-duration: 1ms !important; }
+  }
+
+  .caps { text-transform: uppercase; letter-spacing: var(--tracking-caps); }
+
+  /* ===== scaffold ===== */
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 var(--space-6) var(--space-32); }
+  header.site {
+    display: flex; align-items: center; justify-content: space-between; gap: var(--space-4);
+    padding: var(--space-6) 0; border-bottom: 1px solid var(--line-strong);
+  }
+  .brand { font-family: var(--font-display); font-weight: 500; font-size: var(--text-lg); letter-spacing: var(--tracking-display); text-transform: uppercase; }
+  .theme-toggle {
+    font: 500 var(--text-xs)/1 var(--font-body); letter-spacing: var(--tracking-caps); text-transform: uppercase;
+    background: transparent; color: var(--ink); border: 1px solid var(--line-strong);
+    border-radius: var(--radius-0); padding: var(--space-3) var(--space-4); cursor: pointer;
+    transition: opacity var(--duration-quick) var(--ease-out);
+  }
+  .theme-toggle:hover { opacity: 0.7; }
+
+  .hero { padding: var(--space-32) 0 var(--space-24); border-bottom: 1px solid var(--line); }
+  .hero .kicker { font-size: var(--text-xs); font-weight: 500; margin-bottom: var(--space-6); color: var(--ink-2); }
+  .hero h1 { font-size: var(--text-5xl); text-transform: uppercase; letter-spacing: var(--tracking-display); }
+  .hero .ja { font-size: var(--text-lg); color: var(--ink-2); margin-top: var(--space-6); }
+
+  section { padding-top: var(--space-24); }
+  section > h2 { margin-bottom: var(--space-2); }
+  section > .note { color: var(--ink-2); margin-bottom: var(--space-12); }
+
+  /* ===== swatches ===== */
+  .swatch-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: var(--space-4); }
+  .swatch { border: 1px solid var(--line); }
+  .swatch .chip-c { height: 72px; }
+  .swatch .meta { padding: var(--space-2) var(--space-3); font-size: var(--text-xs); line-height: 1.5; border-top: 1px solid var(--line); }
+  .swatch .meta strong { display: block; font-family: var(--font-mono); font-weight: 600; }
+  .swatch .meta span { color: var(--ink-2); }
+  .swatch-group { margin-bottom: var(--space-12); }
+  .swatch-group h3 { font-size: var(--text-xs); font-weight: 500; letter-spacing: var(--tracking-caps); text-transform: uppercase; color: var(--ink-2); margin-bottom: var(--space-4); }
+
+  /* ===== typography ===== */
+  .type-specimen { display: grid; gap: var(--space-8); border: 1px solid var(--line); padding: var(--space-12); }
+  .type-specimen .row2 { display: grid; grid-template-columns: 9rem 1fr; gap: var(--space-4); align-items: baseline; }
+  .type-specimen .tag { font-size: var(--text-xs); color: var(--ink-2); font-family: var(--font-mono); }
+  .sample-hero { font-family: var(--font-display); font-weight: 500; font-size: var(--text-4xl); line-height: var(--leading-tight); text-transform: uppercase; letter-spacing: var(--tracking-display); }
+  .sample-h { font-family: var(--font-display); font-weight: 500; font-size: var(--text-2xl); line-height: var(--leading-tight); text-transform: uppercase; letter-spacing: var(--tracking-display); }
+  .sample-label { font-size: var(--text-xs); font-weight: 500; }
+  .sample-num td { padding: var(--space-1) var(--space-6) var(--space-1) 0; text-align: right; font-variant-numeric: tabular-nums; font-size: var(--text-lg); }
+  .sample-num td + td { text-align: left; font-size: var(--text-sm); color: var(--ink-2); }
+  .scale-list { display: grid; gap: var(--space-2); margin-top: var(--space-8); }
+  .scale-list .s { display: flex; align-items: baseline; gap: var(--space-4); }
+  .scale-list .s code { min-width: 7.5rem; }
+  .scale-list .g { font-family: var(--font-display); text-transform: uppercase; letter-spacing: var(--tracking-display); }
+
+  /* ===== shape ===== */
+  .shape-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: var(--space-4); }
+  .shape-card { border: 1px solid var(--line); padding: var(--space-8); display: grid; gap: var(--space-4); justify-items: start; }
+  .shape-card .demo { width: 96px; height: 56px; background: var(--bg-sunken); border: 1px solid var(--line-strong); }
+  .shape-card p { font-size: var(--text-xs); color: var(--ink-2); }
+  .space-bar { background: var(--bg-sunken); border-inline-start: 2px solid var(--line-strong); height: var(--space-4); }
+
+  /* ===== buttons ===== */
+  .btn {
+    font: 500 var(--text-sm)/1 var(--font-body);
+    letter-spacing: var(--tracking-caps); text-transform: uppercase;
+    padding: var(--space-4) var(--space-8);
+    border-radius: var(--radius-0); border: 1px solid transparent; cursor: pointer;
+    transition: opacity var(--duration-quick) var(--ease-out);
+  }
+  .btn-solid { background: var(--action); color: var(--action-ink); }
+  .btn-solid:hover { opacity: 0.85; }
+  .btn-outline { background: transparent; color: var(--ink); border-color: var(--line-strong); }
+  .btn-outline:hover { opacity: 0.7; }
+  .btn-text { background: none; border: none; padding: 0; color: var(--ink); text-decoration: underline; text-underline-offset: 4px; }
+  .btn[disabled] { background: var(--bg-sunken); color: var(--ink-3); cursor: not-allowed; }
+  .row { display: flex; flex-wrap: wrap; gap: var(--space-6); align-items: center; }
+
+  /* ===== chips ===== */
+  .chip {
+    display: inline-block; font: 500 var(--text-xs)/1 var(--font-body);
+    letter-spacing: var(--tracking-caps); text-transform: uppercase;
+    padding: var(--space-1) var(--space-3);
+    border: 1px solid var(--line-strong); border-radius: var(--radius-0);
+  }
+  .chip-success { border-color: var(--success); color: var(--success); background: var(--success-soft); }
+  .chip-warning { border-color: var(--warning); color: var(--warning); background: var(--warning-soft); }
+  .chip-danger  { border-color: var(--danger);  color: var(--danger);  background: var(--danger-soft); }
+
+  /* ===== request bar / fields ===== */
+  .request {
+    display: flex; flex-wrap: wrap; gap: var(--space-6); align-items: end;
+    border: 1px solid var(--line-strong); padding: var(--space-8); background: var(--bg);
+  }
+  .field { display: grid; gap: var(--space-2); }
+  .field label { font-size: var(--text-xs); font-weight: 500; letter-spacing: var(--tracking-caps); text-transform: uppercase; }
+  .field input, .field select {
+    background: var(--bg); border: 1px solid var(--line-strong); border-radius: var(--radius-0);
+    padding: var(--space-4); color: var(--ink);
+    font: var(--text-md)/1.4 var(--font-body); font-variant-numeric: tabular-nums;
+  }
+  .field input:focus-visible, .field select:focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; }
+  .field input[aria-invalid="true"] { border-color: var(--danger); }
+  .field .error { font-size: var(--text-sm); color: var(--danger); }
+
+  /* ===== property cards ===== */
+  .properties { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--space-12); }
+  .property-card { display: grid; gap: var(--space-4); }
+  .property-card .photo { aspect-ratio: 4 / 3; display: grid; place-items: end start; padding: var(--space-4); }
+  .photo-1 { background: linear-gradient(165deg, #3A3A3A, #B9B9B9); }
+  .photo-2 { background: linear-gradient(165deg, #1C1C1C, #7E7E7E); }
+  .photo-3 { background: linear-gradient(165deg, #575757, #D6D6D6); }
+  .property-card .photo .chip { background: var(--bg); color: var(--ink); border-color: var(--bg); }
+  .property-card .name { font-family: var(--font-display); font-weight: 500; font-size: var(--text-xl); text-transform: uppercase; letter-spacing: var(--tracking-display); }
+  .property-card .meta { color: var(--ink-2); font-size: var(--text-sm); }
+  .property-card .foot { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-3); border-top: 1px solid var(--line-strong); padding-top: var(--space-3); }
+  .price { font-variant-numeric: tabular-nums; font-weight: 500; font-size: var(--text-lg); }
+  .price small { font-weight: 400; font-size: var(--text-xs); color: var(--ink-2); }
+
+  /* ===== do/dont ===== */
+  .rules { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-6); }
+  .rules .col { border: 1px solid var(--line-strong); }
+  .rules .col h3 { font-size: var(--text-xs); font-weight: 500; letter-spacing: var(--tracking-caps); text-transform: uppercase; padding: var(--space-3) var(--space-6); border-bottom: 1px solid var(--line-strong); }
+  .rules .do h3 { background: var(--action); color: var(--action-ink); }
+  .rules .dont h3 { color: var(--ink-2); }
+  .rules ul { margin: 0; padding: var(--space-6) var(--space-6) var(--space-8) var(--space-8); display: grid; gap: var(--space-3); font-size: var(--text-sm); }
+
+  .demo-panel { border: 1px solid var(--line); padding: var(--space-12); display: grid; gap: var(--space-8); }
+  .demo-panel h3 { font-size: var(--text-xs); font-weight: 500; letter-spacing: var(--tracking-caps); text-transform: uppercase; color: var(--ink-2); }
+  .demo-panel .note { color: var(--ink-2); font-size: var(--text-sm); margin: 0; }
+
+  footer { margin-top: var(--space-32); padding-top: var(--space-6); border-top: 1px solid var(--line-strong); color: var(--ink-2); font-size: var(--text-sm); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="site">
+    <div class="brand">Not a Hotel</div>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-pressed="false">Dark</button>
+  </header>
+
+  <div class="hero">
+    <p class="kicker caps">Design System — 推定復元版 v1.0</p>
+    <h1>Your Home<br>Anywhere</h1>
+    <p class="ja">世界中にあなたの家を。UI は黒・白・グレーに徹し、色は写真と風景が持ち込む。角丸ゼロ、影ゼロ、余白は多め側に倒す。</p>
+  </div>
+
+  <section id="color">
+    <h2>Color</h2>
+    <p class="note">アクセントカラーは存在しない — 黒がアクセント。セマンティック 3 色はアプリの状態表示専用で、マーケティング面には出さない。値は推定。</p>
+
+    <div class="swatch-group">
+      <h3>Monochrome</h3>
+      <div class="swatch-grid">
+        <div class="swatch"><div class="chip-c" style="background:var(--ink)"></div><div class="meta"><strong>--ink</strong><span>本文 #111111 / #F5F5F5</span></div></div>
+        <div class="swatch"><div class="chip-c" style="background:var(--ink-2)"></div><div class="meta"><strong>--ink-2</strong><span>補助 #6E6E6E / #9C9C9C</span></div></div>
+        <div class="swatch"><div class="chip-c" style="background:var(--ink-3)"></div><div class="meta"><strong>--ink-3</strong><span>無効 #A3A3A3 / #6B6B6B</span></div></div>
+        <div class="swatch"><div class="chip-c" style="background:var(--line)"></div><div class="meta"><strong>--line</strong><span>ヘアライン #E6E6E6 / #2B2B2B</span></div></div>
+        <div class="swatch"><div class="chip-c" style="background:var(--bg-alt)"></div><div class="meta"><strong>--bg-alt</strong><span>交互面 #F7F7F7 / #141414</span></div></div>
+        <div class="swatch"><div class="chip-c" style="background:var(--bg)"></div><div class="meta"><strong>--bg</strong><span>背景 #FFFFFF / #0A0A0A</span></div></div>
+      </div>
+    </div>
+
+    <div class="swatch-group">
+      <h3>Semantic — App States Only</h3>
+      <div class="swatch-grid">
+        <div class="swatch"><div class="chip-c" style="background:var(--success)"></div><div class="meta"><strong>--success</strong><span>解錠・確定 #2E7D46 / #6FBF85</span></div></div>
+        <div class="swatch"><div class="chip-c" style="background:var(--warning)"></div><div class="meta"><strong>--warning</strong><span>要確認 #8A6A1C / #D3AD4B</span></div></div>
+        <div class="swatch"><div class="chip-c" style="background:var(--danger)"></div><div class="meta"><strong>--danger</strong><span>エラー #C0273A / #E07284</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="type">
+    <h2>Typography</h2>
+    <p class="note">単一のグロテスク族(スタックは推定)。役割の分化は書体ではなく、サイズ・ウェイト・大文字トラッキングで行う。</p>
+    <div class="type-specimen">
+      <div class="row2"><span class="tag">--text-4xl / caps</span><span class="sample-hero">Setouchi</span></div>
+      <div class="row2"><span class="tag">--text-2xl / caps</span><span class="sample-h">Own a Home</span></div>
+      <div class="row2"><span class="tag">--text-md / body</span><p>使わない日は、ホテルとして貸し出す。鍵はアプリ。チェックインもチェックアウトも、スマートフォンがあれば完了します。</p></div>
+      <div class="row2"><span class="tag">--text-xs / caps</span><span class="sample-label caps">View More — 拠点をすべて見る</span></div>
+      <div class="row2"><span class="tag">tabular-nums</span>
+        <table class="sample-num"><tbody>
+          <tr><td>¥180,000,000</td><td>シェア 1/12(サンプル値)</td></tr>
+          <tr><td>¥95,000,000</td><td>シェア 1/24(サンプル値)</td></tr>
+          <tr><td>402.6 m²</td><td>延床面積</td></tr>
+        </tbody></table>
+      </div>
+    </div>
+    <div class="scale-list">
+      <div class="s"><code>--text-5xl 61px</code><span class="g" style="font-size:var(--text-5xl)">Aa</span></div>
+      <div class="s"><code>--text-4xl 49px</code><span class="g" style="font-size:var(--text-4xl)">Aa</span></div>
+      <div class="s"><code>--text-3xl 39px</code><span class="g" style="font-size:var(--text-3xl)">Aa</span></div>
+      <div class="s"><code>--text-2xl 31px</code><span class="g" style="font-size:var(--text-2xl)">Aa</span></div>
+      <div class="s"><code>--text-xl 25px</code><span class="g" style="font-size:var(--text-xl)">Aa</span></div>
+      <div class="s"><code>--text-lg 20px</code><span style="font-size:var(--text-lg)">あなたの家(リード)</span></div>
+      <div class="s"><code>--text-md 16px</code><span style="font-size:var(--text-md)">あなたの家(本文)</span></div>
+      <div class="s"><code>--text-sm 14px</code><span style="font-size:var(--text-sm)">あなたの家(メタ)</span></div>
+      <div class="s"><code>--text-xs 12px</code><span class="caps" style="font-size:var(--text-xs)">Label — あなたの家</span></div>
+    </div>
+  </section>
+
+  <section id="shape">
+    <h2>Shape &amp; Space</h2>
+    <p class="note">角丸ゼロ・影ゼロ。階層はヘアラインと余白で作る。セクション間は --space-24 以上。</p>
+    <div class="shape-grid">
+      <div class="shape-card"><div class="demo"></div><p><code>--radius-0</code> — すべての面は直角</p></div>
+      <div class="shape-card"><div class="demo" style="border-color:var(--line)"></div><p><code>--line</code> ヘアライン区切り</p></div>
+      <div class="shape-card"><div class="demo" style="background:var(--bg-alt);border:none"></div><p><code>--bg-alt</code> 面の差で階層を作る(影は使わない)</p></div>
+    </div>
+    <div style="display:grid;gap:var(--space-2);margin-top:var(--space-12)">
+      <div class="space-bar" style="width:var(--space-8)"></div>
+      <div class="space-bar" style="width:var(--space-16)"></div>
+      <div class="space-bar" style="width:var(--space-24)"></div>
+      <div class="space-bar" style="width:var(--space-32)"></div>
+      <p class="note" style="margin:0"><code>--space-8 / 16 / 24 / 32</code>(2rem / 4rem / 6rem / 8rem)</p>
+    </div>
+  </section>
+
+  <section id="components">
+    <h2>Components</h2>
+    <p class="note">ソリッド(黒)は 1 画面 1 つ。第 2 候補はアウトライン、第 3 はテキストリンク。</p>
+
+    <div class="demo-panel">
+      <h3>Buttons</h3>
+      <div class="row">
+        <button class="btn btn-solid" type="button">Request</button>
+        <button class="btn btn-outline" type="button">View More</button>
+        <button class="btn btn-text" type="button">資料をダウンロード</button>
+        <button class="btn" type="button" disabled>Sold Out</button>
+      </div>
+    </div>
+
+    <div class="demo-panel" style="margin-top:var(--space-8)">
+      <h3>Chips</h3>
+      <div class="row">
+        <span class="chip">New</span>
+        <span class="chip">Sauna</span>
+        <span class="chip chip-success">予約確定</span>
+        <span class="chip chip-warning">残り 1 枠</span>
+        <span class="chip chip-danger">決済エラー</span>
+      </div>
+      <p class="note">既定は無彩色。セマンティックチップはアプリの状態表示だけに使う。</p>
+    </div>
+
+    <div class="demo-panel" style="margin-top:var(--space-8)">
+      <h3>Request Bar</h3>
+      <div class="request">
+        <div class="field"><label for="in">Check In</label><input id="in" type="text" value="2026-09-18" inputmode="numeric"></div>
+        <div class="field"><label for="out">Check Out</label><input id="out" type="text" value="2026-09-21" inputmode="numeric"></div>
+        <div class="field"><label for="guests">Guests</label>
+          <select id="guests"><option>大人 2 名</option><option>大人 4 名</option><option>大人 6 名</option></select>
+        </div>
+        <button class="btn btn-solid" type="button">Request</button>
+      </div>
+      <div class="request" aria-label="エラー状態の例">
+        <div class="field">
+          <label for="in2">Check In</label>
+          <input id="in2" type="text" value="2026-09-31" aria-invalid="true" aria-describedby="in2-err" inputmode="numeric">
+          <span class="error" id="in2-err">9 月は 30 日までです。日付を選び直してください。</span>
+        </div>
+        <button class="btn btn-outline" type="button">日付を選び直す</button>
+      </div>
+    </div>
+
+    <div class="demo-panel" style="margin-top:var(--space-8)">
+      <h3>Property Cards</h3>
+      <div class="properties">
+        <article class="property-card">
+          <div class="photo photo-1"><span class="chip">New</span></div>
+          <div>
+            <div class="name">Setouchi</div>
+            <p class="meta">香川・瀬戸内 — 設計: Bjarke Ingels Group</p>
+          </div>
+          <div class="foot"><span class="caps" style="font-size:var(--text-xs)">Share 1/12</span><span class="price">¥180,000,000 <small>(サンプル値)</small></span></div>
+        </article>
+        <article class="property-card">
+          <div class="photo photo-2"></div>
+          <div>
+            <div class="name">Aoshima</div>
+            <p class="meta">宮崎・青島 — 海辺のヴィラ</p>
+          </div>
+          <div class="foot"><span class="caps" style="font-size:var(--text-xs)">Share 1/24</span><span class="price">¥95,000,000 <small>(サンプル値)</small></span></div>
+        </article>
+        <article class="property-card">
+          <div class="photo photo-3"></div>
+          <div>
+            <div class="name">Rusutsu</div>
+            <p class="meta">北海道・留寿都 — スキーイン/アウト</p>
+          </div>
+          <div class="foot"><span class="chip chip-warning">残り 1 枠</span><span class="price">¥120,000,000 <small>(サンプル値)</small></span></div>
+        </article>
+      </div>
+      <p class="note">カードに枠線・影は付けない。写真が唯一の「色」で、テキストブロックとの余白だけで成立させる。</p>
+    </div>
+  </section>
+
+  <section id="rules">
+    <h2>Do / Don't</h2>
+    <p class="note">迷ったら「白か黒か、それとも余白か」。</p>
+    <div class="rules">
+      <div class="col do">
+        <h3>Do</h3>
+        <ul>
+          <li>UI は黒・白・グレーだけで組む。色は写真に任せる</li>
+          <li>角は常に直角、影はゼロ。階層はヘアラインと面の差で</li>
+          <li>英字見出し・ラベルは大文字+トラッキング</li>
+          <li>セクション間は <code>--space-24</code> 以上空ける</li>
+          <li>価格・面積・日付は <code>tabular-nums</code></li>
+          <li>フォーカスリングを常に可視に(黒/白)</li>
+        </ul>
+      </div>
+      <div class="col dont">
+        <h3>Don't</h3>
+        <ul>
+          <li>アクセントカラーを発明しない</li>
+          <li>角丸・ドロップシャドウを足さない</li>
+          <li>黒ベタのボタンを 1 画面に並べない</li>
+          <li>LP・拠点紹介にセマンティック色を出さない</li>
+          <li>余白を怖がって詰めない</li>
+          <li>HEX 直書き・<code>outline: none</code> をしない</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    NOT A HOTEL Design System(推定復元版)v1.0 — トークンの実体は <code>tokens.css</code>、運用ルールは <code>design-system.md</code>。HEX・書体は公式一次情報が未入手のため推定値。
+  </footer>
+</div>
+
+<script>
+  var btn = document.getElementById('themeToggle');
+  var mq = window.matchMedia('(prefers-color-scheme: dark)');
+  function effective() {
+    return document.documentElement.dataset.theme || (mq.matches ? 'dark' : 'light');
+  }
+  function paint() {
+    var dark = effective() === 'dark';
+    btn.textContent = dark ? 'Light' : 'Dark';
+    btn.setAttribute('aria-pressed', String(dark));
+  }
+  btn.addEventListener('click', function () {
+    document.documentElement.dataset.theme = effective() === 'dark' ? 'light' : 'dark';
+    paint();
+  });
+  paint();
+</script>
+</body>
+</html>
